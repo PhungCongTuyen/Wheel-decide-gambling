@@ -78,7 +78,7 @@ const Routes = () => {
       },
     };
     dispatchContext({ type: ACTION_TYPE.INIT, payload: profile });
-  }, [token]);
+  }, [dispatchContext, token]);
 
   return <Router>{mappingRoute(router)}</Router>;
 };

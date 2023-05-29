@@ -8,15 +8,20 @@ import {
   TextField,
 } from "@mui/material";
 import { AllInclusive, AssistWalker, DirectionsRun } from "@mui/icons-material";
+
 export enum MODAL_TYPE {
   LOGIN = "LOGIN",
+  WELCOME = "WELCOME",
+  DIRECTION_WEB = "DIRECTION_WEB",
 }
+
 type Props = {
   modalType: MODAL_TYPE;
   onClose?: () => void;
   onOk?: () => void;
   isOpen: boolean;
   isLoading?: boolean;
+  children?: React.ReactElement;
 };
 
 const LoginModal: React.FC<Props> = (props) => {
@@ -74,12 +79,24 @@ const WelcomeModal: React.FC<Props> = (props) => {
   return <></>;
 };
 
+const DirectionModal: React.FC<Props> = (props) => {
+  return (
+    <Modal open={props.isOpen}>
+      <Card>xxxxx</Card>
+    </Modal>
+  );
+};
+
 const CustomizeModal: React.FC<Props> = (props) => {
   switch (props.modalType) {
     case MODAL_TYPE.LOGIN:
       return <LoginModal {...props} />;
-    default:
+    case MODAL_TYPE.WELCOME:
       return <WelcomeModal {...props} />;
+    case MODAL_TYPE.DIRECTION_WEB:
+      return <DirectionModal {...props} />;
+    default:
+      return <Modal open={props.isOpen}>{props.children || <></>}</Modal>;
   }
 };
 
