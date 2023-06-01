@@ -4,7 +4,7 @@ import HypedropImage from "../../assets/images/hypedrop.jpg";
 import CsgoRollImage from "../../assets/images/csgoroll.png";
 import GamdomImage from "../../assets/images/gamdom.jpg";
 import { AirplanemodeActive, DoDisturb } from "@mui/icons-material";
-import CustomizeModal, { MODAL_TYPE } from "../../components/Modal";
+import CustomizeModal, { MODAL_TYPE, WebRoutes } from "../../components/Modal";
 
 enum STATUS_WEB {
   ACTIVE = "ACTIVE",
@@ -80,6 +80,25 @@ const ImageSrc = styled("span")({
   backgroundPosition: "center 40%",
 });
 
+const listRoute = {
+  [SELECTED_WEB.HYPEDROP]: [
+    {
+      name: "Unboxing",
+      route: "/hypedrop/unboxing",
+    },
+    {
+      name: "Battle",
+      route: "/hypedrop/battle",
+    },
+    {
+      name: "Deal",
+      route: "/hypedrop/deal",
+    },
+  ],
+  [SELECTED_WEB.CSGOCASE]: [] as WebRoutes[],
+  [SELECTED_WEB.GAMDOM]: [] as WebRoutes[],
+};
+
 const HomePage = () => {
   const [selectedWeb, setSelectedWeb] = React.useState<SELECTED_WEB>();
   return (
@@ -115,6 +134,14 @@ const HomePage = () => {
       <CustomizeModal
         isOpen={!!selectedWeb}
         modalType={MODAL_TYPE.DIRECTION_WEB}
+        listRoutes={selectedWeb && listRoute[selectedWeb]}
+        sx={{
+          backgroundImage: `url(${
+            listWeb.find((x) => x.web === selectedWeb)?.imageUrl
+          })`,
+          backgroundPosition: "center",
+        }}
+        onClose={() => setSelectedWeb(undefined)}
       />
     </Box>
   );

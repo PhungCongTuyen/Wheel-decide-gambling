@@ -5,9 +5,17 @@ import {
   Card,
   CircularProgress,
   Modal,
+  SxProps,
   TextField,
+  Theme,
 } from "@mui/material";
 import { AllInclusive, AssistWalker, DirectionsRun } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+
+export type WebRoutes = {
+  name: string;
+  route: string;
+};
 
 export enum MODAL_TYPE {
   LOGIN = "LOGIN",
@@ -22,6 +30,8 @@ type Props = {
   isOpen: boolean;
   isLoading?: boolean;
   children?: React.ReactElement;
+  listRoutes?: WebRoutes[];
+  sx?: SxProps<Theme>;
 };
 
 const LoginModal: React.FC<Props> = (props) => {
@@ -81,8 +91,19 @@ const WelcomeModal: React.FC<Props> = (props) => {
 
 const DirectionModal: React.FC<Props> = (props) => {
   return (
-    <Modal open={props.isOpen}>
-      <Card>xxxxx</Card>
+    <Modal open={props.isOpen} onClose={props.onClose}>
+      <Card
+        className="absolute top-[50%] left-[50%] w-[400px] translate-x-[-50%] translate-y-[-50%] px-6 pt-6 pb-10 h-[400px] flex flex-col items-center justify-center gap-4"
+        sx={props.sx}
+      >
+        {props?.listRoutes?.map((item, index) => (
+          <Link to={item.route} key={index} className="w-full">
+            <Button className="!bg-violet-500 w-full text-center h-[40px] rounded-lg !text-white !font-bold leading-[40px]">
+              {item.name}
+            </Button>
+          </Link>
+        ))}
+      </Card>
     </Modal>
   );
 };

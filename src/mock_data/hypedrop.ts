@@ -1,4 +1,4 @@
-[
+const data = [
     {
         "name": "TIGHT BUDGET",
         "price": 0.12,
@@ -499,8 +499,6 @@
         "price": 35.89,
         "odd-win": 0.45
     },
-]
-[
     {
         "name": "RIOT",
         "price": 36.67,
@@ -751,7 +749,7 @@
         "price": 56.13,
         "odd-win": 0.62909
     },
-    //***************************//
+     /*---------------------------Updating------------------------*/
     {
         "name": "FORGOTTEN VAULT",
         "price": 10.39,
@@ -1003,3 +1001,5 @@
         "odd-win": 0.45
     },
 ]
+
+export default data;

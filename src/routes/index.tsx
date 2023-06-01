@@ -6,7 +6,6 @@ import {
   Redirect,
 } from "react-router-dom";
 import HomePage from "../pages/HomePage";
-import HypeDropPage from "../pages/HypeDropPage";
 import HypeDropUnboxing from "../pages/HypeDropPage/Unboxing";
 import HypeDropBattle from "../pages/HypeDropPage/Battle";
 import HypeDropDeal from "../pages/HypeDropPage/Deal";
@@ -30,10 +29,6 @@ const Routes = () => {
       path: "/",
       element: <HomePage />,
       exact: true,
-    },
-    {
-      path: "/hypedrop",
-      element: <HypeDropPage />,
     },
     {
       path: "/hypedrop/unboxing",
