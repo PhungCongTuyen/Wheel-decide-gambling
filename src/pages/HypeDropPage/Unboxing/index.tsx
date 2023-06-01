@@ -5,13 +5,15 @@ import { ArrowBackIosNew, HourglassEmpty } from "@mui/icons-material";
 import CircularProgressWithLabel from "../../../components/CircularProgressWithLabel";
 import InputNumber from "../../../components/InputNumber";
 import DataHypedrop from "../../../mock_data/hypedrop";
-enum STEP {
+import Waiting from "../../../assets/images/vQEkPRw.png";
+
+export enum STEP {
   BEFORE_GENERATING = 0,
   GENERATING = 1,
   GENERATED = 2,
 }
 
-type RangePrice = {
+export type RangePrice = {
   start: number;
   end: number;
 };
@@ -60,17 +62,6 @@ const HypeDropUnboxing = () => {
     }
   }, [isGenerating, progress]);
 
-  // React.useEffect(() => {
-  //   fetch("mock_data/hypedrop.json")
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((json) => {
-  //       setData(json);
-  //       //console.log(this.users);
-  //     });
-  // }, []);
-
   const filterFromRange = (start: number, end: number) => {
     const newData = DataHypedrop.filter(
       (x) => x.price >= start && x.price <= end
@@ -101,7 +92,11 @@ const HypeDropUnboxing = () => {
   };
 
   const handleCalculate = () => {
-    if (!rangePrice.end || !rangePrice.start || !percent) return;
+    if (!rangePrice.end || !rangePrice.start || !percent) {
+      setError("Please fill in the correct information !! ");
+      return;
+    }
+    setError("");
     setIsGenerating(STEP.GENERATING);
     const dataFiltered = filterFromRange(rangePrice.start, rangePrice.end);
     if (dataFiltered) {
@@ -126,7 +121,7 @@ const HypeDropUnboxing = () => {
       <Card className="max-w-[800px] mx-auto p-6 flex flex-col justify-center items-center gap-5 mt-3">
         <Box className="flex flex-col justify-center items-center gap-5">
           <Typography className="text-center !font-bold">
-            Input the range of total price
+            Enter the range of total price
           </Typography>
           <Box className="flex">
             <Box>
@@ -150,7 +145,7 @@ const HypeDropUnboxing = () => {
           </Box>
           <Box className="flex flex-col justify-center items-center">
             <Typography className="text-center !font-bold">
-              Input % chance to get profit
+              Enter % chance to get profit with cases
             </Typography>
             <InputNumber
               min={0}
@@ -164,6 +159,9 @@ const HypeDropUnboxing = () => {
                 }
               }}
             />
+          </Box>
+          <Box>
+            <Typography className="text-red-700 !font-bold">{error}</Typography>
           </Box>
           {isGenerating === STEP.BEFORE_GENERATING && (
             <Button
@@ -194,6 +192,14 @@ const HypeDropUnboxing = () => {
                   ? `The case is: ${nameOfCase}`
                   : "Nothing fit with this information"}
               </Typography>
+              <Box
+                className="w-[200px] h-[200px]"
+                sx={{
+                  backgroundImage: `url(${Waiting})`,
+                  backgroundPosition: "0 100%",
+                  backgroundSize: "150%",
+                }}
+              />
               <Button
                 className="!mt-3"
                 variant="contained"
