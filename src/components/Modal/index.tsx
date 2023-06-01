@@ -8,6 +8,7 @@ import {
   SxProps,
   TextField,
   Theme,
+  Typography,
 } from "@mui/material";
 import { AllInclusive, AssistWalker, DirectionsRun } from "@mui/icons-material";
 import { Link } from "react-router-dom";
@@ -32,6 +33,7 @@ type Props = {
   children?: React.ReactElement;
   listRoutes?: WebRoutes[];
   sx?: SxProps<Theme>;
+  title?: string;
 };
 
 const LoginModal: React.FC<Props> = (props) => {
@@ -93,9 +95,14 @@ const DirectionModal: React.FC<Props> = (props) => {
   return (
     <Modal open={props.isOpen} onClose={props.onClose}>
       <Card
-        className="absolute top-[50%] left-[50%] w-[400px] translate-x-[-50%] translate-y-[-50%] px-6 pt-6 pb-10 h-[400px] flex flex-col items-center justify-center gap-4"
+        className="absolute top-[50%] left-[50%] w-[400px] translate-x-[-50%] translate-y-[-50%] p-6 min-h-[200px] flex flex-col items-center justify-center gap-4"
         sx={props.sx}
       >
+        <Box>
+          <Typography className="!font-bold text-violet-500">
+            {props?.title}
+          </Typography>
+        </Box>
         {props?.listRoutes?.map((item, index) => (
           <Link to={item.route} key={index} className="w-full">
             <Button className="!bg-violet-500 w-full text-center h-[40px] rounded-lg !text-white !font-bold leading-[40px]">

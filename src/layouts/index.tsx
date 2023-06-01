@@ -52,9 +52,9 @@ const MainLayout = ({ children }: { children: React.ReactElement }) => {
     null
   );
   return (
-    <Box className="relative" sx={{ height: "calc(100vh - 140px)" }}>
+    <Box className="relative" sx={{ minHeight: "calc(100vh - 80px)" }}>
       {children}
-      <Box className="!fixed flex items-center">
+      <Box className="!fixed flex items-center bg-transparent bottom-2">
         <Marquee className="text-5xl uppercase font-bold overflow-hidden text-purple-200 pointer-events-none select-none">
           If this is the first time join it, please click read this &nbsp;
         </Marquee>

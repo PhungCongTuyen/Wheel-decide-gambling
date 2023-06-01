@@ -13,7 +13,7 @@ enum STATUS_WEB {
 
 enum SELECTED_WEB {
   HYPEDROP = "HYPEDROP",
-  CSGOCASE = "CSGOCASE",
+  CSGOROLL = "CSGOROLL",
   GAMDOM = "GAMDOM",
 }
 
@@ -26,7 +26,7 @@ const listWeb = [
   {
     imageUrl: CsgoRollImage,
     status: STATUS_WEB.INCOMING,
-    web: SELECTED_WEB.CSGOCASE,
+    web: SELECTED_WEB.CSGOROLL,
   },
   {
     imageUrl: GamdomImage,
@@ -37,14 +37,14 @@ const listWeb = [
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
-  width: 300,
-  height: 300,
+  width: 120,
+  height: 120,
   boxShadow: "0px 4px 20px #e0c0c0",
-  opacity: 0.6,
+  opacity: 0.7,
   transitionDuration: "0.2s",
   alignItems: "start",
   justifyContent: "end",
-  borderRadius: "40px",
+  borderRadius: "16px",
   "&:hover": {
     opacity: 1,
     transitionDuration: "0.2s",
@@ -95,7 +95,7 @@ const listRoute = {
       route: "/hypedrop/deal",
     },
   ],
-  [SELECTED_WEB.CSGOCASE]: [] as WebRoutes[],
+  [SELECTED_WEB.CSGOROLL]: [] as WebRoutes[],
   [SELECTED_WEB.GAMDOM]: [] as WebRoutes[],
 };
 
@@ -111,23 +111,32 @@ const HomePage = () => {
       >
         {listWeb.map((item, index) => {
           return (
-            <ImageButton
-              key={index}
-              onClick={() => {
-                if (item.status === STATUS_WEB.INCOMING) return;
-                setSelectedWeb(item.web);
-              }}
-            >
-              <ImageSrc
-                style={{ backgroundImage: `url(${item.imageUrl})` }}
-                className="rounded-[40px]"
-              />
-              <Typography className="z-0 p-4">
-                {item.status !== STATUS_WEB.ACTIVE && (
-                  <DoDisturb className="text-red-600" fontSize="large" />
-                )}
-              </Typography>
-            </ImageButton>
+            <Box key={index}>
+              <ImageButton
+                onClick={() => {
+                  if (item.status === STATUS_WEB.INCOMING) return;
+                  setSelectedWeb(item.web);
+                }}
+              >
+                <ImageSrc
+                  style={{ backgroundImage: `url(${item.imageUrl})` }}
+                  className="rounded-[16px]"
+                />
+                <Typography className="z-0 p-4">
+                  {item.status !== STATUS_WEB.ACTIVE && (
+                    <DoDisturb className="text-red-600" fontSize="large" />
+                  )}
+                </Typography>
+              </ImageButton>
+              <Box className="mt-2">
+                <Typography
+                  variant="body2"
+                  className="text-center text-white !font-semibold"
+                >
+                  {item.web}
+                </Typography>
+              </Box>
+            </Box>
           );
         })}
       </Stack>
@@ -135,12 +144,7 @@ const HomePage = () => {
         isOpen={!!selectedWeb}
         modalType={MODAL_TYPE.DIRECTION_WEB}
         listRoutes={selectedWeb && listRoute[selectedWeb]}
-        sx={{
-          backgroundImage: `url(${
-            listWeb.find((x) => x.web === selectedWeb)?.imageUrl
-          })`,
-          backgroundPosition: "center",
-        }}
+        title={listWeb.find((x) => x.web === selectedWeb)?.web}
         onClose={() => setSelectedWeb(undefined)}
       />
     </Box>

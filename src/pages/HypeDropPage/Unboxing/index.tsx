@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Card, Typography } from "@mui/material";
+import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { ArrowBackIosNew, HourglassEmpty } from "@mui/icons-material";
 import CircularProgressWithLabel from "../../../components/CircularProgressWithLabel";
@@ -25,7 +25,7 @@ export type DataType = {
 };
 
 const HypeDropUnboxing = () => {
-  const { goBack } = useHistory();
+  const { replace } = useHistory();
   const [progress, setProgress] = React.useState<number>(0);
   const [isGenerating, setIsGenerating] = React.useState<STEP>(
     STEP.BEFORE_GENERATING
@@ -111,107 +111,136 @@ const HypeDropUnboxing = () => {
   return (
     <Box className="p-4 h-full">
       <Button
-        onClick={() => goBack()}
+        onClick={() => replace("/home")}
         variant="contained"
         color="secondary"
         startIcon={<ArrowBackIosNew />}
       >
         Back
       </Button>
-      <Card className="max-w-[800px] mx-auto p-6 flex flex-col justify-center items-center gap-5 mt-3">
-        <Box className="flex flex-col justify-center items-center gap-5">
-          <Typography className="text-center !font-bold">
-            Enter the range of total price
-          </Typography>
-          <Box className="flex">
-            <Box>
-              <Typography className="text-center !font-bold">Start</Typography>
+      <Stack
+        direction="row"
+        flexWrap="wrap"
+        className="rounded-[16px] items-center justify-center mt-3"
+        sx={{ height: "calc(100vh - 220px)" }}
+      >
+        <Card className="w-[45%] min-w-[400px] p-6 h-full m-2">
+          <Box>
+            <Typography variant="h4" className="text-center !font-bold">
+              Setting
+            </Typography>
+          </Box>
+          <Box className="flex flex-col gap-3 mt-4">
+            <Typography className="!font-bold">
+              Enter the range of case's price
+            </Typography>
+            <Box className="flex items-center gap-3">
+              <Typography className=" w-[90px]">Start price:</Typography>
               <InputNumber
                 min={0}
                 value={rangePrice.start}
                 onChange={(v) =>
                   setRangePrice((prev) => ({ ...prev, start: v }))
                 }
+                disabled={isGenerating !== STEP.BEFORE_GENERATING}
               />
+              <Typography>(Currency)</Typography>
             </Box>
-            <Box>
-              <Typography className="text-center !font-bold">End</Typography>
+            <Box className="flex items-center gap-3">
+              <Typography className="w-[90px]">End price:</Typography>
               <InputNumber
                 min={0}
                 value={rangePrice.end}
                 onChange={(v) => setRangePrice((prev) => ({ ...prev, end: v }))}
+                disabled={isGenerating !== STEP.BEFORE_GENERATING}
               />
+              <Typography>(Currency)</Typography>
             </Box>
-          </Box>
-          <Box className="flex flex-col justify-center items-center">
-            <Typography className="text-center !font-bold">
+            <Typography className="!font-bold">
               Enter % chance to get profit with cases
             </Typography>
-            <InputNumber
-              min={0}
-              max={100}
-              value={percent}
-              onChange={(v) => {
-                if (v > 100) {
-                  setPercent(100);
-                } else {
-                  setPercent(v);
-                }
-              }}
-            />
-          </Box>
-          <Box>
-            <Typography className="text-red-700 !font-bold">{error}</Typography>
-          </Box>
-          {isGenerating === STEP.BEFORE_GENERATING && (
+            <Box className="flex items-center gap-3">
+              <Typography className="w-[90px]">Percent win:</Typography>
+              <InputNumber
+                min={0}
+                max={100}
+                value={percent}
+                disabled={isGenerating !== STEP.BEFORE_GENERATING}
+                onChange={(v) => {
+                  if (v > 100) {
+                    setPercent(100);
+                  } else {
+                    setPercent(v);
+                  }
+                }}
+              />
+              <Typography>%</Typography>
+            </Box>
+            <Box>
+              <Typography className="text-red-700 !font-bold">
+                {error}
+              </Typography>
+            </Box>
             <Button
+              className="w-[300px] !m-auto !font-bold"
               onClick={() => {
                 handleCalculate();
               }}
               variant="contained"
               color="secondary"
               startIcon={<HourglassEmpty />}
+              disabled={isGenerating !== STEP.BEFORE_GENERATING}
             >
-              Start Generating
+              Generate
             </Button>
-          )}
-        </Box>
-        <Box className="flex flex-col justify-center items-center">
-          {isGenerating === STEP.GENERATING && (
-            <CircularProgressWithLabel
-              variant="determinate"
-              color="secondary"
-              value={progress}
-              size={200}
-            />
-          )}
-          {isGenerating === STEP.GENERATED && (
-            <Box className="flex flex-col justify-center items-center">
-              <Typography className="text-center !font-bold text-rose-500">
-                {nameOfCase
-                  ? `The case is: ${nameOfCase}`
-                  : "Nothing fit with this information"}
-              </Typography>
-              <Box
-                className="w-[200px] h-[200px]"
-                sx={{
-                  backgroundImage: `url(${Waiting})`,
-                  backgroundPosition: "0 100%",
-                  backgroundSize: "150%",
-                }}
-              />
-              <Button
-                className="!mt-3"
-                variant="contained"
+          </Box>
+        </Card>
+        <Card className="w-[45%] min-w-[400px] p-6 h-full m-2">
+          <Box>
+            <Typography variant="h4" className="text-center !font-bold">
+              Result
+            </Typography>
+          </Box>
+          <Box className="flex flex-col justify-center items-center mt-4">
+            {isGenerating === STEP.GENERATING && (
+              <CircularProgressWithLabel
+                variant="determinate"
                 color="secondary"
-                onClick={() => setIsGenerating(STEP.BEFORE_GENERATING)}
-              >
-                Clear
-              </Button>
-            </Box>
-          )}
-        </Box>
-      </Card>
+                value={progress}
+                size={200}
+              />
+            )}
+            {isGenerating === STEP.GENERATED && (
+              <Box className="flex flex-col justify-center items-center">
+                <Typography
+                  variant="h5"
+                  className="text-center !font-semibold text-rose-500"
+                >
+                  {nameOfCase
+                    ? nameOfCase
+                    : "Nothing fit with this information"}
+                </Typography>
+                <Box
+                  className="w-[200px] h-[200px]"
+                  sx={{
+                    backgroundImage: `url(${Waiting})`,
+                    backgroundPosition: "0 100%",
+                    backgroundSize: "150%",
+                  }}
+                />
+                <Button
+                  className="!mt-7 w-[300px] !m-auto !font-bold"
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setIsGenerating(STEP.BEFORE_GENERATING)}
+                >
+                  Clear
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Card>
+      </Stack>
     </Box>
   );
 };

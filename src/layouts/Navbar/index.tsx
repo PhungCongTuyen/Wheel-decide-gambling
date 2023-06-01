@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <Box className="h-20 shadow-lg flex justify-between items-center px-10">
+    <Box className="h-20 shadow-lg flex justify-between items-center px-10 bg-white">
       <Box
         component="div"
         className="text-3xl font-bold flex justify-between items-center"
